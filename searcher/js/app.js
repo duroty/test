@@ -90,7 +90,9 @@ DRTEleccionesCat = (function() {
 		    dataType: "json",
 		    timeout: 5000
 		}).done(function(data) {
-			if (!data.transversales || !data.resultados) {
+			if (!data.transversales || !data.resultados || data.transversales['escrutado'] <= 0) {
+				$container.find(".chart-group").addClass("chart-group-error");
+				$container.find(".chart-group").find(".chart-legend").css({"margin-top":"15px"});
 				$container.find("#chart-title").html("<p>Resultados de " + objectRegion.value + " (" + year + ")</p>");
 				$container.find("#chart").removeClass("chart");
 				$container.find("#chart").html('<div class="waiting-results bg-danger text-center">Esperando resultados de ' + year + '</div>');
@@ -104,9 +106,11 @@ DRTEleccionesCat = (function() {
 				var backupUrl = BACKUP_BASE_PATH + "/" + year + "/" + objectRegion.code + ".json";
 				getAjax(backupUrl, $container, year, objectRegion, enableFooter, true);
 			} else {
+				$container.find(".chart-group").addClass("chart-group-error");
+				$container.find(".chart-group").find(".chart-legend").css({"margin-top":"20px"});
 				$container.find("#chart-title").html("<p>Resultados de " + objectRegion.value + " (" + year + ")</p>");
 				$container.find("#chart").removeClass("chart");
-				$container.find("#chart").html('<div class="waiting-results bg-danger text-center">No se han encotrado datos</div>');
+				$container.find("#chart").html('<div class="waiting-results bg-danger text-center">Esperando resultados de ' + year + '</div>');
 			}
 		});
     }
