@@ -2,7 +2,7 @@ var DRTEleccionesCat = DRTEleccionesCat || {};
 DRTEleccionesCat = (function() {
 	var year1 = "2017";
 	var year2 = "2015";
-	var BASE_PATH = "http://elecciones2017pre.electiona.com/elecciones/elecciones-catalanas-2017"
+	var BASE_PATH = "http://www.lavanguardia.biz/elecciones/elecciones-catalanas-2017"
 	var JSON_BASE_PATH = "https://premium-pre.electiona.com/catalanas/data/results/data/5";
 	var BACKUP_BASE_PATH = "https://eleccionestest.duroty.com/catalanas";
 	var initiated = false;
@@ -216,10 +216,10 @@ DRTEleccionesCat = (function() {
 		html += '</thead>';
 
 		html += '<tbody>';
-		html += '<tr>';
+		/*html += '<tr>';
 			html += '<td>Hora</td>';
 			html += '<td>' + response['transversales']['hora'] + '</td>';
-		html += '</tr>';
+		html += '</tr>';*/
 		html += '<tr>';
 			html += '<td>Escrutado</td>';
 			if(response['transversales']['escrutado']) {
