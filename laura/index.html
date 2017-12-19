@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Leaflet Layers Control Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="https://cdn.rawgit.com/VangData/prova/master/leaflet.css">
+	<style>
+		#map {
+			width: 100%;
+			height: 500px;
+			background-color: white;
+		}
+
+		.legend {
+		    line-height: 1.1em;
+		    color: #757575;
+		    height:auto;
+		    width:auto;
+		    font-size: 1em;
+		    font-weight: lighter;
+		    font-family: sans-serif;
+		    background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 0.5em rgba(0,0,0,0.2);
+			border-radius: 0.3em;
+			padding:0.8em;
+		}
+		.legend i {
+		    width: 1em;
+		    height: 1em;
+		    float: left;
+		    margin-right: 1em;
+		    opacity: 0.7;
+		}
+
+		.leaflet-popup-content-wrapper {
+			  background:rgba(255,255,255,0.9);
+			  font-family: sans-serif;
+			  color:#757575;
+			  font-size:1em;
+			  line-height:9em;
+			  font-weight: lighter;
+			  border-radius:0.5em;
+			  }
+		.leaflet-popup-content-wrapper span {
+			font-weight: bold;
+			}
+		.leaflet-popup-tip-container {
+			  background:hsla(360, 100%, 100%, 0)
+			  }
+
+	</style>
+</head>
+<body>
+	<div id="map" class="leaflet-container leaflet-retina leaflet-fade-anim" tabindex="0" style="position: relative;">
+	<script src="https://cdn.rawgit.com/VangData/prova/master/leaflet.js"></script>
+	<script type="text/javascript" src="resultats2015.geojson"></script>
+	<script type="text/javascript">
+
+		var map = L.map('map').setView([41.5, 1.8], 7.5);
+
+		// control that shows state info on hover
+		
+
+
+function getColor(d) {
+    return d > 85 ? '#4d004b':
+           d > 63 ? '#88419d':
+           d > 42  ? '#8c6bb1':
+           d > 21  ? '#8c96c6':
+                      '#9ebcda';
+}
+
+
+
+
+		function style(feature) {
+			return {
+				weight: 0.1,
+				opacity: 1,
+				color: '#757575',
+				dashArray: '0',
+				fillOpacity: 1,
+				smoothFactor: 0.1,
+				fillColor: getColor(feature.properties.p_jxsi_2015)
+			};
+		}
+
+		function highlightFeature(e) {
+			var layer = e.target;
+
+			layer.setStyle({
+				weight: 1,
+				color: 'black',
+				dashArray: '',
+				fillOpacity: 0.7
+			});
+
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
+
+			info.update(layer.feature.properties);
+		}
+
+		var geojson;
+
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
+			info.update();
+		}
+
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+		function onEachFeature(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+
+			});
+		}
+
+
+		map.doubleClickZoom.disable();
+		geojson = L.geoJson(data, {
+			style: style,
+			onEachFeature: function( feature, layer ){
+      		layer.bindPopup( "<span>" + feature.properties.nom_muni + "</span><br/>" + feature.properties.p_jxsi_2015 + " %") 
+    		}
+		}).addTo(map);
+
+
+		var legend = L.control({position: 'bottomright'});
+			legend.onAdd = function (map) {
+			    var div = L.DomUtil.create('div', 'info legend'),
+			        grades = [0, 21, 42, 63, 85],
+			        labels = [];
+			    // loop through our density intervals and generate a label with a colored square for each interval
+			    for (var i = 0; i < grades.length; i++) {
+			        div.innerHTML +=
+			            '<i style="background:' + getColor(grades[i] + 1) + '" ></i> ' +
+			            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + "%" + '<br>' : '%+');
+			    }
+			    return div;
+			};
+			legend.addTo(map);
+	</script>
+
+</body></html>
