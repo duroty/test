@@ -1,9 +1,9 @@
 var DRTEleccionesCat = DRTEleccionesCat || {};
 DRTEleccionesCat = (function() {
 	var initiated = false;
-	var year = "2017";
+	var year = "2015";
 	var BASE_PATH = "http://www.lavanguardia.com/elecciones/elecciones-catalanas-2017";
-	var JSON_BASE_PATH = "https://premium-pre.electiona.com/catalanas/data/results/data/5";
+	var JSON_BASE_PATH = "https://premium.electiona.com/catalanas/data/results/data/5";
 	var BACKUP_BASE_PATH = "https://elecciones.duroty.com/catalanas";
 	var initiated = false;
 	var chartsEnabled = false;
